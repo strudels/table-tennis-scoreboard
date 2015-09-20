@@ -7,7 +7,8 @@ Uses Adafruit 1.2" 7-segment display:
 Build instructions (on ubuntu)
 ------------------------------
   1. Ensure that the necessary libraries are installed:
-       | sudo apt-get install arduino arduino-core arduino-mk
+     .. code::
+       sudo apt-get install arduino arduino-core arduino-mk
 
   2. Init submodules to get modules for 7-segment display:
      .. code::
