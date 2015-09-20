@@ -1,20 +1,7 @@
 #include <Wire.h> // Enable this line if using Arduino Uno, Mega, etc.
 #include "scoreboard.h"
 
-/*
-* Setup logger to use Serial Console
-*/
-void setupLogger();
-
-/*
-* Log message
-*/
-void log(const char* msg);
-
 void setup() {
-  // Setup Serial console for debuging
-  setupLogger();
-
   // Setup 7-Segment display
   matrix.begin(0x70);
 
@@ -40,21 +27,26 @@ void setup() {
 
 
 void loop() {
+  if(!readButtons()) {
+    return;
+  }
+
   // If modifier button is pressed.
-  if(digitalRead(BUTTON_C)) {
-    if(digitalRead(BUTTON_A)){
+  if(buttons[BUTTON_C]) {
+    if(buttons[BUTTON_A]){
       // Add point to left display
       addPoints(&leftDisplay, -1);
 
-    } else if (digitalRead(BUTTON_B)){
+    } else if (buttons[BUTTON_B]){
       // Add point to right display
       addPoints(&rightDisplay, -1);
 
-    } else if (digitalRead(BUTTON_D)) {
-      // Ensure that reset buttons are held for 5 seconds before resetting.
-      for(int i=0; i<50; i++) {
+    } else if (buttons[BUTTON_D]) {
+      // Ensure that reset buttons are held for 3 seconds before resetting.
+      for(int i=0; i<30; i++) {
         delay(100);
-        if(!(digitalRead(BUTTON_C) && digitalRead(BUTTON_D))) {
+	readButtons();
+        if(!(buttons[BUTTON_C] && buttons[BUTTON_D])) {
           return;
         }
       }
@@ -62,20 +54,20 @@ void loop() {
     }
   // If modifier button is not pressed.
   } else {
-    if(digitalRead(BUTTON_A)){
+    if(buttons[BUTTON_A]){
       // Add point to left display
       addPoints(&leftDisplay, 1);
 
-    } else if (digitalRead(BUTTON_B)){
+    } else if (buttons[BUTTON_B]){
       // Add point to right display
       addPoints(&rightDisplay, 1);
 
-    } else if (digitalRead(BUTTON_D)) {
+    } else if (buttons[BUTTON_D]) {
       swapSides();
     }
   }
 
-  delay(2000);
+  delay(1000);
   // Show Current Score
   showScore();
 }
@@ -86,12 +78,4 @@ int main() {
   while(1) {
     loop();
   }
-}
-
-void setupLogger() {
-  Serial.begin(9600);
-}
-
-void log(const char* msg) {
-  Serial.println(msg);
 }

@@ -1,5 +1,7 @@
 #include "scoreboard.h"
 
+int buttons[4] = {BUTTON_A, BUTTON_B, BUTTON_C, BUTTON_D};
+
 Adafruit_7segment matrix = Adafruit_7segment();
 
 int currentGame = 0;
@@ -10,6 +12,15 @@ struct Graph rightGraph = {{9,10,11,12,13}, GRAPH_PIN_VALUES, 0};
 
 struct ScoreDisplay leftDisplay = {&leftGraph, INIT_SCORES};
 struct ScoreDisplay rightDisplay = {&rightGraph, INIT_SCORES};
+
+int readButtons() {
+  int numPressed = 0;
+  for(int i=0; i<4; i++) {
+    buttons[i] = digitalRead(i);
+    numPressed += buttons[i];
+  }
+  return numPressed;
+}
 
 void setCurrentGame(int gameNum) {
   if(gameNum < 0) {
@@ -69,11 +80,18 @@ void addPoints(struct ScoreDisplay* recvDisplay, int points) {
   }
 
   // If win condition is already present before adding points,
-  if(winner == recvDisplay && points > 0) {
-    // move to next game.
-    _addWinsToGraph(winner->winsGraph, 1);
-    setCurrentGame(currentGame + 1);
-    return;
+  if(winner == recvDisplay) {
+    if(points > 0) {
+      // move to next game.
+      _addWinsToGraph(recvDisplay->winsGraph, 1);
+      setCurrentGame(currentGame + 1);
+      return;
+    } else if(recvDisplay->winsGraph->wins >= 5){
+      // Subtract win from winner.
+      _addWinsToGraph(recvDisplay->winsGraph, -1);
+      recvDisplay->scores[currentGame] += points;
+      return;
+    }
   }
 
   // Determine which display is the display being modified.
@@ -100,10 +118,10 @@ void addPoints(struct ScoreDisplay* recvDisplay, int points) {
   recvDisplay->scores[currentGame] += points;
   winner = getWinner();
 
-  // If adding points causes win condition, add win after 5 seconds.
+  // If adding points causes win condition, add win after 3 seconds.
   if(winner == recvDisplay) {
     showScore();
-    delay(5000);
+    delay(3000);
     _addWinsToGraph(recvDisplay->winsGraph, 1);
     if(winner->winsGraph->wins < 5) {
       setCurrentGame(currentGame + 1);

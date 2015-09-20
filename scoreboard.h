@@ -14,6 +14,8 @@
 // Define initial scores
 #define INIT_SCORES {0,0,0,0,0,0,0,0,0}
 
+extern int buttons[4];
+
 // matrix for 7 segment display
 extern Adafruit_7segment matrix;
 
@@ -35,12 +37,16 @@ struct ScoreDisplay {
 
 //bar Graphs
 extern struct Graph leftGraph;
-// One of these pins is bad; will have to change that pin to 14 (Analog pin 0)
 extern struct Graph rightGraph;
 
 // Displays for each side of the table.
 extern struct ScoreDisplay leftDisplay;
 extern struct ScoreDisplay rightDisplay;
+
+/*
+ * Reads pins for all buttons, and returns the number of buttons pressed.
+ */
+int readButtons();
 
 /*
  * Sets the current game number, and ensures that the game number is always
@@ -69,7 +75,7 @@ struct ScoreDisplay* getWinner();
  * Adds an arbitrary number of points to a recvDisplay.
  *
  * If a win condition is reached, the recvDisplay will display the winning
- * score for 5 seconds, and then zero out the displayed game score and
+ * score for 3 seconds, and then zero out the displayed game score and
  * increment the LED bar Graph on the winning side.
  *
  * If recvDisplay's current score becomes negative from a subtraction, it will
