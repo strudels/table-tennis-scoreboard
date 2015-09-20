@@ -7,19 +7,19 @@ Uses Adafruit 1.2" 7-segment display:
 Build instructions (on ubuntu)
 ------------------------------
   1. Ensure that the necessary libraries are installed:
-     .. code::
+     ::
        sudo apt-get install arduino arduino-core arduino-mk
 
   2. Init submodules to get modules for 7-segment display:
-     .. code::
+     ::
        git submodule init
        git submodule update
 
   3. Build project:
-     .. code::
+     ::
        make
 
   4. Upload project to arduino (NOTE, if your arduino is not on /dev/ttyUSB0,
      edit Makefile to the correct value):
-     .. code::
+     ::
        sudo make upload
