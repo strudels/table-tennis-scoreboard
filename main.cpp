@@ -23,6 +23,8 @@ void setup() {
     pinMode(leftDisplay.winsGraph->pins[i], OUTPUT);
     pinMode(rightDisplay.winsGraph->pins[i], OUTPUT);
   }
+  delay(3000);
+  showScore();
 }
 
 
@@ -67,9 +69,9 @@ void loop() {
     }
   }
 
-  delay(1000);
   // Show Current Score
   showScore();
+  delay(500);
 }
 
 int main() {
