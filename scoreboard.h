@@ -2,12 +2,6 @@
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
 
-// Define remote buttons
-#define BUTTON_A 0
-#define BUTTON_B 1
-#define BUTTON_C 2
-#define BUTTON_D 3
-
 // Define Bar Graph pin orientation
 #define GRAPH_PIN_VALUES {0,0,0,0,1}
 

@@ -1,7 +1,5 @@
 #include "scoreboard.h"
 
-int buttons[4] = {BUTTON_A, BUTTON_B, BUTTON_C, BUTTON_D};
-
 Adafruit_7segment matrix = Adafruit_7segment();
 
 int currentGame = 0;

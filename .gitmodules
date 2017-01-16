@@ -4,3 +4,6 @@
 [submodule "libraries/Adafruit-GFX-Library"]
 	path = libraries/Adafruit-GFX-Library
 	url = https://github.com/adafruit/Adafruit-GFX-Library
+[submodule "libraries/rc-switch"]
+	path = libraries/rc-switch
+	url = https://github.com/sui77/rc-switch.git
