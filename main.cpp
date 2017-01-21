@@ -1,4 +1,5 @@
 #include "game.h"
+#include "controller.h"
 #include <Wire.h> // Enable this line if using Arduino Uno, Mega, etc.
 
 void setup() {
@@ -10,9 +11,12 @@ void setup() {
 
   // Setup 7 segment display
   ScoreDisplay::setupDevice();
+
+  // Setup 4 button remote controller
+  Controller::setup();
 }
 
-int main() {
+int test_main() {
   setup();
   Game currentGame;
   while(1) {
@@ -65,4 +69,9 @@ int main() {
 
     delay(1000000000);
   }
+}
+
+int main() {
+  setup();
+  Game currentGame;
 }
