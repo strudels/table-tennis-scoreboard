@@ -6,6 +6,8 @@
 #define LEFT_TURN_PIN 3
 #define RIGHT_TURN_PIN A0
 
+#define BUTTON_DELAY 500  // milliseconds
+
 void debugGames() {
   Serial.print("Left Score: ");
   Serial.println(ScoreBoard::leftPlayer->getScore());
@@ -80,6 +82,6 @@ int main() {
       debugGames();
     }
 
-    delay(200);
+    delay(BUTTON_DELAY);
   }
 }

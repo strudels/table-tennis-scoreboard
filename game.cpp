@@ -22,7 +22,9 @@ void Game::incPoints(Player& player) {
 void Game::decPoints(Player& player) {
   if ((this->player1->getScore() == 0) && (this->player2->getScore() == 0)) {
     this->decWins(*(this->getWinner(this->getMatch() - 1)));
-  } else if (player.getScore() > 0) {
+  } else if (this->__isWinning(player) && player.getWins() >= MAX_WINS) {
+    this->decWins(player);
+  }else if (player.getScore() > 0) {
     player.setScore(player.getScore() - 1);
   }
 }
@@ -34,8 +36,11 @@ void Game::incWins(Player& player) {
 }
 
 void Game::decWins(Player& player) {
-  if (this->getMatch() > 0)
+  if (this->getMatch() > 0) {
     player.setWins(player.getWins() - 1);
+  } else {
+    player.setWins(0);
+  }
 }
 
 int Game::getMatch() {
