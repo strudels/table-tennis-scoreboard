@@ -1,15 +1,20 @@
-#include "player.h"
+#include "game.h"
 
-Player::Player() {
+Player::Player(Game& game) {
   this->reset();
+  this->__game = &game;
 }
 
 int Player::getScore() {
-  return this->__score;
+  return this->__matchScores[this->__game->getMatch()];
+}
+
+int Player::getScore(int match) {
+  return this->__matchScores[match];
 }
 
 void Player::setScore(int amount) {
-  this->__score = amount;
+  this->__matchScores[this->__game->getMatch()] = amount;
 }
 
 int Player::getWins() {
@@ -21,6 +26,8 @@ void Player::setWins(int amount) {
 }
 
 void Player::reset() {
-  this->__score = 0;
+  for(int i = 0; i < MAX_MATCHES; i++) {
+    this->__matchScores[i] = 0;
+  }
   this->__wins = 0;
 }

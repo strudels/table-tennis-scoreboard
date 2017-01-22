@@ -1,26 +1,31 @@
 #include "player.h"
-#include "scoreDisplay.h"
-#include "winDisplay.h"
 
 class Game {
 private:
   Player* __turn;
-  Player* __player1;
-  Player* __player2;
-  ScoreDisplay* __leftScore;
-  ScoreDisplay* __rightScore;
-  WinDisplay* __leftWins;
-  WinDisplay* __rightWins;
+
+  bool __isWinning(Player& player);
   bool __isWinning(Player& player, Player& opponent);
 
 public:
-  Player* leftPlayer;
-  Player* rightPlayer;
+  Player* player1;
+  Player* player2;
+
   Game();
-  void addPoints(Player& player, int amount);
+
+  void incPoints(Player& player);
+  void decPoints(Player& player);
+  void incWins(Player& player);
+  void decWins(Player& player);
+
+  int getMatch();
+  Player* getTurn();
   Player* getWinner();
-  void swapSides();
+
   void reset();
+
+  // These should be moved to scoreboard
+  void swapSides();
   void displayScore();
   void displayWins();
 };
