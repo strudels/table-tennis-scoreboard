@@ -13,26 +13,23 @@ void Controller::setup() {
 int Controller::getButtonValue() {
   long value;
   while(1) {
-    if (rcSwitch.available()) {
-      // First value retrieves encoding
-      value = rcSwitch.getReceivedValue();
+    rcSwitch.resetAvailable();
+    // First value retrieves encoding
+    value = rcSwitch.getReceivedValue();
 
-      // Read next value for command if encoding is good
-      if (value == 0) {
-	rcSwitch.resetAvailable();
-	continue;
-      } else {
+    // Read next value for command if encoding is good
+    if (value == 0) {
+      continue;
+    } else {
 	Serial.println(value);
 	value = rcSwitch.getReceivedValue();
-	rcSwitch.resetAvailable();
 	// Xor'ing with mask gives us only the parts not covered by the mask
 	for(int i = 0; i < 2; i++) {
-	  if ((Controller::masks[i] & value) == Controller::masks[i]) {
+	    if ((Controller::masks[i] & value) == Controller::masks[i]) {
 	    Serial.println(value ^ Controller::masks[i]);
 	    return value ^ Controller::masks[i];
-	  }
+	    }
 	}
-      }
     }
   }
 }
