@@ -1,11 +1,11 @@
 #include "player.h"
 
+#define MAX_WINS 5
+
 class Game {
 private:
-  Player* __turn;
-
   bool __isWinning(Player& player);
-  bool __isWinning(Player& player, Player& opponent);
+  bool __isWinning(Player& player, Player& opponent, int match);
 
 public:
   Player* player1;
@@ -21,6 +21,7 @@ public:
   int getMatch();
   Player* getTurn();
   Player* getWinner();
+  Player* getWinner(int match);
 
   void reset();
 

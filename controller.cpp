@@ -1,6 +1,6 @@
 #include "controller.h"
 
-const long Controller::masks[] = {1096320, 31360};  // {remote1, remote2}
+const long Controller::masks[] = {1096320, 7436928};  // {remote1, remote2}
 
 RCSwitch rcSwitch = RCSwitch();
 
@@ -19,16 +19,18 @@ int Controller::getButtonValue() {
 
       // Read next value for command if encoding is good
       if (value == 0) {
-	Serial.println("Unknown encoding");
 	rcSwitch.resetAvailable();
 	continue;
       } else {
+	Serial.println(value);
 	value = rcSwitch.getReceivedValue();
 	rcSwitch.resetAvailable();
 	// Xor'ing with mask gives us only the parts not covered by the mask
 	for(int i = 0; i < 2; i++) {
-	  if (((Controller::masks[i] >> 4) & (value >> 4)) == 0)
+	  if ((Controller::masks[i] & value) == Controller::masks[i]) {
+	    Serial.println(value ^ Controller::masks[i]);
 	    return value ^ Controller::masks[i];
+	  }
 	}
       }
     }

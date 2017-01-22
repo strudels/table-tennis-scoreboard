@@ -12,6 +12,9 @@ void ScoreBoard::setup(Game& game, int leftTurnPin, int rightTurnPin) {
   ScoreBoard::__rightScore = new ScoreDisplay(SCORE_DISPLAY_IS_RIGHT);
   ScoreBoard::__leftWins = new WinDisplay(WIN_DISPLAY_IS_LEFT);
   ScoreBoard::__rightWins = new WinDisplay(WIN_DISPLAY_IS_RIGHT);
+
+  pinMode(leftTurnPin, OUTPUT);
+  pinMode(rightTurnPin, OUTPUT);
 }
 
 void ScoreBoard::__displayScore() {
@@ -39,9 +42,7 @@ void ScoreBoard::swapSides() {
   ScoreBoard::leftPlayer = ScoreBoard::rightPlayer;
   ScoreBoard::rightPlayer = other;
 
-  ScoreBoard::__displayScore();
-  ScoreBoard::__displayWins();
-  ScoreBoard::__displayTurn();
+  ScoreBoard::update();
 }
 
 void ScoreBoard::update() {

@@ -3,8 +3,8 @@
 #include "scoreBoard.h"
 #include <Wire.h> // Enable this line if using Arduino Uno, Mega, etc.
 
-#define LEFT_TURN_PIN 0
-#define RIGHT_TURN_PIN 1
+#define LEFT_TURN_PIN 3
+#define RIGHT_TURN_PIN A0
 
 void debugGames() {
   Serial.print("Left Score: ");
@@ -20,7 +20,7 @@ void debugGames() {
   Serial.print("Left Turn: ");
   Serial.println(bitRead(PORTD, LEFT_TURN_PIN));
   Serial.print("Right Turn: ");
-  Serial.println(bitRead(PORTD, RIGHT_TURN_PIN));
+  Serial.println(bitRead(PORTC, 0));
 }
 
 int main() {
@@ -29,6 +29,7 @@ int main() {
 
   // Enable serial for debugging
   Serial.begin(9600);
+  Serial.println("Hello world");
 
   // Setup 7 segment display
   ScoreDisplay::setupDevice();
@@ -37,29 +38,41 @@ int main() {
   Controller::setup();
 
   // game and ScoreBoard singleton
-  Game game;
-  ScoreBoard::setup(game, LEFT_TURN_PIN, RIGHT_TURN_PIN);
+  Game* game = new Game();
+  Player* winner;
+  ScoreBoard::setup(*game, LEFT_TURN_PIN, RIGHT_TURN_PIN);
 
+  Serial.println("Starting loop");
+  delay(3000);
+  ScoreBoard::update();
   while(1) {
     int value = Controller::getButtonValue();
     if (value == BUTTON_A) {
-      game.incPoints(*ScoreBoard::leftPlayer);
+      game->incPoints(*ScoreBoard::leftPlayer);
     } else if (value == BUTTON_B) {
-      game.incPoints(*ScoreBoard::rightPlayer);
+      game->incPoints(*ScoreBoard::rightPlayer);
     } else if (value == BUTTON_D) {
       ScoreBoard::swapSides();
     } else if (value == (BUTTON_A & BUTTON_C)) {
-      game.decPoints(*ScoreBoard::leftPlayer);
+      game->decPoints(*ScoreBoard::leftPlayer);
     } else if (value == (BUTTON_B & BUTTON_C)) {
-      game.decPoints(*ScoreBoard::rightPlayer);
+      game->decPoints(*ScoreBoard::rightPlayer);
     } else if (value == (BUTTON_D & BUTTON_C)) {
-      game.reset();
+      game->reset();
       break;
     }
 
+    ScoreBoard::update();
     debugGames();
 
-    ScoreBoard::update();
+    winner = game->getWinner();
+    if (winner && winner->getWins() < MAX_WINS) {
+      game->incWins(*winner);
+      delay(3000);
+      ScoreBoard::update();
+      debugGames();
+    }
+
     delay(200);
   }
 }
