@@ -53,13 +53,12 @@ int main() {
       game->incPoints(*ScoreBoard::rightPlayer);
     } else if (value == BUTTON_D) {
       ScoreBoard::swapSides();
-    } else if (value == (BUTTON_A & BUTTON_C)) {
+    } else if (value == (BUTTON_A | BUTTON_C)) {
       game->decPoints(*ScoreBoard::leftPlayer);
-    } else if (value == (BUTTON_B & BUTTON_C)) {
+    } else if (value == (BUTTON_B | BUTTON_C)) {
       game->decPoints(*ScoreBoard::rightPlayer);
-    } else if (value == (BUTTON_D & BUTTON_C)) {
+    } else if (value == (BUTTON_D | BUTTON_C)) {
       game->reset();
-      break;
     }
 
     ScoreBoard::update();
