@@ -26,18 +26,3 @@ public:
   static void swapSides();
   static void update();
 };
-
-#ifdef SCOREBOARD_H
-#define SCOREBOARD_H
-
-extern Game* ScoreBoard::game;
-extern Player* ScoreBoard::leftPlayer;
-extern Player* ScoreBoard::rightPlayer;
-extern int ScoreBoard::__leftTurnPin;
-extern int ScoreBoard::__rightTurnPin;
-extern ScoreDisplay* ScoreBoard::__leftScore;
-extern ScoreDisplay* ScoreBoard::__rightScore;
-extern WinDisplay* ScoreBoard::__leftWins;
-extern WinDisplay* ScoreBoard::__rightWins;
-
-#endif SCOREBOARD_H

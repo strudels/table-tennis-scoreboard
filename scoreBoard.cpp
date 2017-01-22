@@ -49,3 +49,13 @@ void ScoreBoard::update() {
   ScoreBoard::__displayWins();
   ScoreBoard::__displayTurn();
 }
+
+Game* ScoreBoard::game;
+Player* ScoreBoard::leftPlayer;
+Player* ScoreBoard::rightPlayer;
+int ScoreBoard::__leftTurnPin;
+int ScoreBoard::__rightTurnPin;
+ScoreDisplay* ScoreBoard::__leftScore;
+ScoreDisplay* ScoreBoard::__rightScore;
+WinDisplay* ScoreBoard::__leftWins;
+WinDisplay* ScoreBoard::__rightWins;
