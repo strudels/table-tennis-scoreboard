@@ -67,8 +67,10 @@ int main() {
 
     winner = game->getWinner();
     if (winner && winner->getWins() < MAX_WINS) {
-      game->incWins(*winner);
+      // Delay to display score of current match before incrementing wins and
+      // displaying new match.
       delay(3000);
+      game->incWins(*winner);
       ScoreBoard::update();
       debugGames();
     }

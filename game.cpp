@@ -52,16 +52,30 @@ int Game::getMatch() {
 
 Player* Game::getTurn() {
   Player* lastWinner = this->getWinner(this->getMatch() - 1);
+  Player* lastLoser = (lastWinner == this->player1 ?
+		       this->player2 : this->player1);
+  // If the score is 0-0, turn for the winner of the last match
   if ((this->player1->getScore() == 0) && (this->player2->getScore() == 0)) {
     return lastWinner;
   }
 
+  // If score is 10-10 or greater, the turn is every serve
+  if (this->player1->getScore() + this->player2->getScore() >= 20) {
+    switch ((this->player1->getScore() + this->player2->getScore()) % 2) {
+    case 0:
+      return lastWinner;
+    default:
+      return lastLoser;
+    }
+  }
+
+  // If score is less than 10-10, the turn is every other serve
   switch ((this->player1->getScore() + this->player2->getScore()) % 4) {
   case 0:
   case 1:
     return lastWinner;
   default:
-    return lastWinner == this->player1 ? this->player2 : this->player1;
+    return lastLoser;
   }
 }
 
