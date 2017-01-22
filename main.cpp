@@ -40,24 +40,28 @@ int main() {
   // game and ScoreBoard singleton
   Game* game = new Game();
   Player* winner;
+  int buttonValue;
   ScoreBoard::setup(*game, LEFT_TURN_PIN, RIGHT_TURN_PIN);
 
   Serial.println("Starting loop");
   delay(3000);
   ScoreBoard::update();
   while(1) {
-    int value = Controller::getButtonValue();
-    if (value == BUTTON_A) {
+    bool hadDecrement = false;
+    buttonValue = Controller::getButtonValue();
+    if (buttonValue == BUTTON_A) {
       game->incPoints(*ScoreBoard::leftPlayer);
-    } else if (value == BUTTON_B) {
+    } else if (buttonValue == BUTTON_B) {
       game->incPoints(*ScoreBoard::rightPlayer);
-    } else if (value == BUTTON_D) {
+    } else if (buttonValue == BUTTON_D) {
       ScoreBoard::swapSides();
-    } else if (value == (BUTTON_A | BUTTON_C)) {
+    } else if (buttonValue == (BUTTON_A | BUTTON_C)) {
       game->decPoints(*ScoreBoard::leftPlayer);
-    } else if (value == (BUTTON_B | BUTTON_C)) {
+      hadDecrement = true;
+    } else if (buttonValue == (BUTTON_B | BUTTON_C)) {
       game->decPoints(*ScoreBoard::rightPlayer);
-    } else if (value == (BUTTON_D | BUTTON_C)) {
+      hadDecrement = true;
+    } else if (buttonValue == (BUTTON_D | BUTTON_C)) {
       game->reset();
     }
 
@@ -65,7 +69,9 @@ int main() {
     debugGames();
 
     winner = game->getWinner();
-    if (winner && winner->getWins() < MAX_WINS) {
+    // If there is a winner that has not achieved maximum wins and is also not
+    // the result of a revert to previous match via decrement
+    if (winner && winner->getWins() < MAX_WINS && not hadDecrement) {
       // Delay to display score of current match before incrementing wins and
       // displaying new match.
       delay(3000);
