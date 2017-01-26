@@ -1,42 +1,35 @@
 #include "winDisplay.h"
 
-const bool WinDisplay::pinDefaults[] = {false, false, false, false, true};
-const int WinDisplay::leftDisplayPins[] = {4, 5, 6, 7, 8};
-const int WinDisplay::rightDisplayPins[] = {9, 10, 11, 12, 13};
+#define WIN_DISPLAY_I2C_ADDR 0x71
+
+Adafruit_24bargraph winsBarGraph = Adafruit_24bargraph();
+
+void WinDisplay::Setup() {
+  winsBarGraph.begin(WIN_DISPLAY_I2C_ADDR);
+  for(int i = 0; i < TOTAL_LEDS; i++) {
+    winsBarGraph.setBar(i, LED_OFF);
+  }
+  winsBarGraph.writeDisplay();
+}
 
 WinDisplay::WinDisplay(int side) {
-  const int *graphPins;
   switch(side) {
-    case WIN_DISPLAY_IS_LEFT:
-      graphPins = WinDisplay::leftDisplayPins;
-      break;
-    case WIN_DISPLAY_IS_RIGHT:
-      graphPins = WinDisplay::rightDisplayPins;
-      break;
-    default:
-      // Should probably be some debug here.
-      return;
-  }
-
-  // initialize graph pins
-  for(int i = 0; i < 5; i++) {
-    this->__graphPins[i] = graphPins[i];
-    pinMode(graphPins[i], OUTPUT);
+  case WIN_DISPLAY_IS_LEFT:
+    this->__offset = 0;
+    break;
+  case WIN_DISPLAY_IS_RIGHT:
+    this->__offset = 12;
+    break;
   }
 }
 
-void WinDisplay::write(int amount) {
-  for(int i = 0; i < 5; i++) {
-    if (i+1 <= amount) {
-      // Bit flipping the pinDefault turns the LED on.
-      digitalWrite(this->__graphPins[i], ((int)(this->pinDefaults[i])) ^ 1);
-    } else {
-      // No bit flip of the pinDefaults turns the LED off.
-      digitalWrite(this->__graphPins[i], ((int)(this->pinDefaults[i])));
-    }
+void WinDisplay::write(int amount, int color) {
+  for(int i = this->__offset; i < this->__offset + amount; i++) {
+    winsBarGraph.setBar(i, color);
   }
+  winsBarGraph.writeDisplay();
 }
 
 void WinDisplay::reset() {
-  this->write(0);
+  this->write(TOTAL_LEDS / 2, LED_OFF);
 }

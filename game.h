@@ -1,3 +1,4 @@
+#include "Adafruit_LEDBackpack.h"
 #include "player.h"
 
 #define MAX_WINS 5

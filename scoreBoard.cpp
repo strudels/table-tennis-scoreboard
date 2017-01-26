@@ -23,8 +23,10 @@ void ScoreBoard::__displayScore() {
 }
 
 void ScoreBoard::__displayWins() {
-  ScoreBoard::__leftWins->write(ScoreBoard::leftPlayer->getWins());
-  ScoreBoard::__rightWins->write(ScoreBoard::rightPlayer->getWins());
+  ScoreBoard::__leftWins->write(ScoreBoard::leftPlayer->getWins(),
+				ScoreBoard::leftPlayer->getWinColor());
+  ScoreBoard::__rightWins->write(ScoreBoard::rightPlayer->getWins(),
+				 ScoreBoard::rightPlayer->getWinColor());
 }
 
 void ScoreBoard::__displayTurn() {

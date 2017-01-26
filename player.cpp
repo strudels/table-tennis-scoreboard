@@ -1,8 +1,13 @@
 #include "game.h"
 
-Player::Player(Game& game) {
+Player::Player(Game& game, int winColor) {
   this->reset();
   this->__game = &game;
+  this->__winColor = winColor;
+}
+
+int Player::getWinColor() {
+  return this->__winColor;
 }
 
 int Player::getScore() {

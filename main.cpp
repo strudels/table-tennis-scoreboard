@@ -36,6 +36,9 @@ int main() {
   // Setup 7 segment display
   ScoreDisplay::setupDevice();
 
+  // Setup 24-LED bar graph
+  WinDisplay::Setup();
+
   // Setup 4 button remote controller
   Controller::setup();
 

@@ -1,8 +1,8 @@
 #include "game.h"
 
 Game::Game() {
-  this->player1 = new Player(*this);
-  this->player2 = new Player(*this);
+  this->player1 = new Player(*this, LED_RED);
+  this->player2 = new Player(*this, LED_GREEN);
 }
 
 bool Game::__isWinning(Player& player) {

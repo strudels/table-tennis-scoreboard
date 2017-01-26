@@ -1,23 +1,19 @@
-#include <Arduino.h>
+// Libraries for 24-LED bar graph
+#include "Adafruit_LEDBackpack.h"
+#include "Adafruit_GFX.h"
 
 #define WIN_DISPLAY_IS_LEFT 0
 #define WIN_DISPLAY_IS_RIGHT 1
 
-#define LEFT_WIN_DISPLAY_PINS {4, 5, 6, 7, 8}
-#define RIGHT_WIN_DISPLAY_PINS {9, 10, 11, 12, 13}
+#define TOTAL_LEDS 24
 
 class WinDisplay {
 private:
-  int __wins;
-  int __graphPins[5];  // Pin numbers used to control each LED in graph
+  int __offset;
 
 public:
-  // Pin values necessary to turn off all LEDs
-  // Flipping these values will turn on the LEDs
-  const static bool pinDefaults[];
-  const static int leftDisplayPins[];
-  const static int rightDisplayPins[];
+  static void Setup();
   WinDisplay(int side);
-  void write(int amount);
+  void write(int amount, int color);
   void reset();
 };
